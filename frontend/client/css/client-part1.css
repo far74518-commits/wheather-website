@@ -1,0 +1,503 @@
+/* ==========================================================================
+   PakWeather Live — Ultra-Premium Commercial Weather Dashboard (client.css)
+   ========================================================================== */
+
+:root {
+    --bg-base: #080c11;
+    --bg-canvas: #0d131a;
+    --bg-card: #121a24;
+    --bg-card-elevated: #16202c;
+    --bg-card-glass: rgba(18, 26, 36, 0.72);
+    --bg-card-hover: rgba(28, 40, 56, 0.85);
+
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-card: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(56, 189, 248, 0.35);
+
+    --cyan-accent: #00d2ff;
+    --cyan-glow: rgba(0, 210, 255, 0.35);
+    --sky-blue: #38bdf8;
+    --emerald-accent: #10b981;
+    --emerald-glow: rgba(16, 185, 129, 0.35);
+    --amber-accent: #fbbf24;
+    --rose-accent: #f43f5e;
+    --purple-accent: #a855f7;
+
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-highlight: #e2e8f0;
+
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --radius-pill: 9999px;
+
+    --shadow-card: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+    --shadow-glow: 0 0 25px rgba(0, 210, 255, 0.25);
+    --shadow-elevated: 0 20px 48px -10px rgba(0, 0, 0, 0.7);
+
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light Theme Variables */
+body.theme-light {
+    --bg-base: #eef2f6;
+    --bg-canvas: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-elevated: #ffffff;
+    --bg-card-glass: rgba(255, 255, 255, 0.94);
+    --bg-card-hover: #e2e8f0;
+
+    --border-subtle: rgba(15, 23, 42, 0.08);
+    --border-card: rgba(15, 23, 42, 0.1);
+    --border-hover: rgba(2, 132, 199, 0.6);
+
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-highlight: #0f172a;
+
+    --shadow-card: 0 10px 25px -4px rgba(15, 23, 42, 0.07), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+    --shadow-elevated: 0 20px 35px -8px rgba(15, 23, 42, 0.12);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 15px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* RTL Urdu Font Support */
+html[dir="rtl"] body {
+    font-family: 'Noto Naskh Arabic', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Atmospheric Ambient Lighting */
+.bg-atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: radial-gradient(circle at 20% 15%, rgba(0, 210, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+}
+
+/* Day & Night Dynamic Atmosphere for Searched City */
+body.city-is-day .bg-atmosphere {
+    background: radial-gradient(circle at 25% 15%, rgba(251, 191, 36, 0.22) 0%, transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.18) 0%, transparent 65%);
+}
+
+body.city-is-night .bg-atmosphere {
+    background: radial-gradient(circle at 20% 15%, rgba(99, 102, 241, 0.28) 0%, transparent 60%),
+                radial-gradient(circle at 75% 85%, rgba(30, 27, 75, 0.5) 0%, transparent 60%);
+}
+
+body.theme-light.city-is-day .bg-atmosphere {
+    background: radial-gradient(circle at 25% 15%, rgba(254, 215, 170, 0.5) 0%, transparent 60%),
+                radial-gradient(circle at 85% 75%, rgba(186, 230, 253, 0.45) 0%, transparent 65%);
+}
+
+body.theme-light.city-is-night .bg-atmosphere {
+    background: radial-gradient(circle at 25% 15%, rgba(199, 210, 254, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 85% 75%, rgba(224, 231, 255, 0.45) 0%, transparent 65%);
+}
+
+body.theme-sunny .bg-atmosphere {
+    background: radial-gradient(circle at 25% 15%, rgba(251, 191, 36, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 85% 75%, rgba(249, 115, 22, 0.12) 0%, transparent 65%);
+}
+
+body.theme-rainy .bg-atmosphere {
+    background: radial-gradient(circle at 20% 15%, rgba(0, 210, 255, 0.18) 0%, transparent 60%),
+                radial-gradient(circle at 75% 85%, rgba(59, 130, 246, 0.18) 0%, transparent 60%);
+}
+
+body.theme-stormy .bg-atmosphere {
+    background: radial-gradient(circle at 20% 15%, rgba(168, 85, 247, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(14, 165, 233, 0.14) 0%, transparent 65%);
+}
+
+body.theme-foggy .bg-atmosphere {
+    background: radial-gradient(circle at 30% 20%, rgba(148, 163, 184, 0.18) 0%, transparent 60%);
+}
+
+.bg-noise-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.025;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   APP SHELL LAYOUT (SIDEBAR + MAIN DASHBOARD)
+   ========================================================================== */
+.app-shell {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Glass Card Global Helper */
+.glass-panel {
+    background: var(--bg-card-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-smooth), border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.glass-panel:hover {
+    border-color: var(--border-hover);
+}
+
+/* ==========================================================================
+   1. SLIM LEFT NAVIGATION RAIL (REFERENCE MATCH)
+   ========================================================================== */
+.sidebar-nav-rail {
+    width: 76px;
+    flex-shrink: 0;
+    background: rgba(10, 14, 20, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 28px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebar-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.brand-logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, rgba(0, 210, 255, 0.2), rgba(56, 189, 248, 0.05));
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cyan-accent);
+    font-size: 1.3rem;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.25);
+    transition: transform var(--transition-smooth);
+}
+
+.brand-logo-icon:hover {
+    transform: rotate(45deg) scale(1.05);
+}
+
+.brand-name {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+}
+
+.nav-rail-item {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.nav-rail-item:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-rail-item.active {
+    color: var(--cyan-accent);
+    background: rgba(0, 210, 255, 0.12);
+    border-color: rgba(0, 210, 255, 0.35);
+    box-shadow: 0 0 16px rgba(0, 210, 255, 0.2);
+}
+
+.nav-rail-item.active::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background: var(--cyan-accent);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 10px var(--cyan-accent);
+}
+
+/* Tooltip on Hover */
+.nav-tooltip {
+    position: absolute;
+    left: 64px;
+    background: var(--bg-card-elevated);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-card);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateX(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    z-index: 200;
+}
+
+.nav-rail-item:hover .nav-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.sidebar-footer-btn {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-footer-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.bell-pulse-dot {
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    width: 6px;
+    height: 6px;
+    background: var(--rose-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--rose-accent);
+}
+
+.user-avatar-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 210, 255, 0.4);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+}
+
+.user-avatar-placeholder {
+    color: var(--sky-blue);
+    font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   2. MAIN DASHBOARD VIEWPORT
+   ========================================================================== */
+.dashboard-viewport {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 32px 60px 32px;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   TOP BAR (SEARCH + UTILITIES)
+   ========================================================================== */
+.dashboard-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.top-bar-left {
+    flex: 1;
+    max-width: 480px;
+}
+
+.search-box-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.search-box-container input {
+    width: 100%;
+    padding: 12px 75px 12px 44px;
+    background: rgba(18, 26, 36, 0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    outline: none;
+    transition: all var(--transition-smooth);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.search-box-container input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-box-container input:focus {
+    background: rgba(24, 34, 48, 0.95);
+    border-color: var(--cyan-accent);
+    box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 42px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    transition: background var(--transition-fast);
+}
+
+.clear-search-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.geo-locate-btn {
+    position: absolute;
+    right: 12px;
+    background: rgba(0, 210, 255, 0.12);
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    color: var(--cyan-accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: all var(--transition-fast);
+}
+
+.geo-locate-btn:hover {
+    background: rgba(0, 210, 255, 0.25);
+    transform: scale(1.08);
+}
+
+/* Autocomplete Dropdown */
+.suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    background: rgba(18, 26, 36, 0.95);
+    backdrop-filter: blur(28px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    z-index: 500;
+    box-shadow: var(--shadow-elevated);
+    display: none;
+}
+
+.suggestions-dropdown.open {
+    display: block;
+    animation: fadeInDown 0.2s ease;
+}

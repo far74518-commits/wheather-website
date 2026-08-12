@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PakMosam – Commercial Dashboard Weather Platform</title>
+    <meta name="description"
+        content="Ultra-premium dark modern weather dashboard for Pakistan. Real-time conditions, 7-day forecast, interactive radar condition map, AQI smog tracking, 14 quick city dashboards, namaz times, and Urdu support.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="../assets/shared.css">
+    <link rel="stylesheet" href="css/client-part1.css">
+    <link rel="stylesheet" href="css/client-part2.css">
+    <link rel="stylesheet" href="css/client-part3.css">
+    <link rel="stylesheet" href="css/client-part4.css">
+    <link rel="stylesheet" href="css/client-part5.css">
+    <link rel="stylesheet" href="css/client-part6.css">
+</head>
+
+<body class="theme-dark-dashboard">
+    <div class="bg-atmosphere" id="bgAtmosphere"></div>
+    <div class="bg-noise-layer"></div>
+    <div class="app-shell">
+        <aside class="sidebar-nav-rail" id="sidebarRail">
+            <div class="sidebar-brand">
+                <div class="brand-logo-icon">
+                    <img src="https://flagcdn.com/w40/pk.png" alt="PK Flag" width="24" style="border-radius: 2px;">
+                </div>
+                <span class="brand-name">PakMosam</span>
+            </div>
+            <nav class="sidebar-menu">
+                <button class="nav-rail-item active" id="navDashboard" title="Dashboard" data-tab="dashboard">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    <span class="nav-tooltip">Dashboard</span>
+                </button>
+                <button class="nav-rail-item" id="navMap" title="Weather Radar Map" data-tab="map">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span class="nav-tooltip">Radar Map</span>
+                </button>
+                <button class="nav-rail-item" id="navLocations" title="Pakistani Cities" data-tab="locations">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span class="nav-tooltip">14 Cities</span>
+                </button>
+                <button class="nav-rail-item" id="navAqi" title="Air Quality & Smog" data-tab="aqi">
+                    <i class="fa-solid fa-lungs"></i>
+                    <span class="nav-tooltip">AQI & Smog</span>
+                </button>
+                <button class="nav-rail-item" id="navForecast" title="7-Day Forecast & Hourly" data-tab="forecast">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span class="nav-tooltip">Forecast</span>
+                </button>
+                <a href="../admin/index.html" class="nav-rail-item" id="navAdmin" title="Admin Settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="nav-tooltip">Admin Panel</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="sidebar-footer-btn" id="notifBellBtn" title="Weather Alerts">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="bell-pulse-dot" id="bellDot"></span>
+                </button>
+                <div class="user-avatar-wrap" id="userAvatarWrap" title="Pakistan Weather Live">
+                    <div class="user-avatar-placeholder">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main class="dashboard-viewport" id="dashboardViewport">
+            <header class="dashboard-top-bar">
+                <div class="top-bar-left">
+                    <div class="search-box-container" id="searchBox">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="searchInput"
+                            placeholder="Search Pakistani or global city (e.g. Islamabad, Lahore, Karachi)..."
+                            autocomplete="off">
+                        <button class="clear-search-btn" id="clearBtn" title="Clear search" style="display:none;"><i
+                                class="fa-solid fa-xmark"></i></button>
+                        <button class="geo-locate-btn" id="geoBtn" title="Use current GPS location"><i
+                                class="fa-solid fa-crosshairs"></i></button>
+                        <div class="suggestions-dropdown" id="suggestions"></div>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <div class="live-visitor-pill" id="liveBadge">
+                        <span class="pulse-green-dot"></span>
+                        <span id="lblLiveBadge">LIVE</span>
+                    </div>
+                    <button class="pill-btn lang-pill" id="langToggleBtn" title="Switch Language / زبان تبدیل کریں">
+                        <i class="fa-solid fa-language"></i>
+                        <span id="langLabel">اردو</span>
+                    </button>
+                    <div class="unit-pill-group">
+                        <button class="unit-btn active" data-unit="C" id="unitC">°C</button>
+                        <button class="unit-btn" data-unit="F" id="unitF">°F</button>
+                        <button class="unit-btn" data-unit="K" id="unitK">K</button>
+                    </div>
+                    <button class="icon-tool-btn" id="speakWeatherBtn" title="Listen to Weather Summary">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <span class="tool-label" id="lblReadBtn">Read</span>
+                    </button>
+                    <button class="icon-tool-btn" id="ambienceBtn" title="Ambient Atmospheric Sound">
+                        <i class="fa-solid fa-cloud-rain"></i>
+                        <span class="tool-label" id="ambienceLabel">Sound</span>
+                    </button>
+                    <button class="icon-tool-btn theme-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    </button>
+                    <button class="pill-btn radar-pill-btn" id="openRadarBtn">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        <span id="lblRadarBtn">Live Radar</span>
+                    </button>
+                </div>
+            </header>
+            <div id="weatherAlertBanner" class="weather-alert-banner" style="display:none;">
+                <div class="alert-content">
+                    <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+                    <span id="alertText">Advisory: Heavy monsoon or heat advisory detected.</span>
+                </div>
+                <button class="alert-close-btn" id="closeAlertBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="dashboard-quad-layout">
+                <section class="card-hero-weather glass-panel-glow" id="heroWeatherCard">
+                    <div class="hero-atmosphere-backdrop" id="heroAtmosphereBackdrop"></div>
+                    <div class="hero-top-row">
+                        <button class="hero-pin-btn" id="pinCityBtn" title="Save to favorite cities">
+                            <i class="fa-regular fa-star" id="pinStarIcon"></i>
+                        </button>
+                        <div class="hero-daynight-pill" id="heroDayNightPill">
+                            <i class="fa-solid fa-sun" id="heroDayNightIcon"></i>
+                            <span id="heroDayNightText">Daytime</span>
+                        </div>
+                        <button class="hero-search-trigger-btn" id="heroSearchTrigger" title="Quick City Search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                    <div class="hero-main-content">
+                        <div class="hero-illustration-box">
+                            <div class="hero-icon-3d" id="heroIconBig">⛈️</div>
+                        </div>
+                        <div class="hero-temp-block">
+                            <h1 class="hero-huge-temp" id="heroTemp">--°</h1>
+                            <div class="hero-highlow-pill" id="heroHighLow">
+                                <span><i class="fa-solid fa-arrow-up"></i> H: <strong id="heroHigh">--°</strong></span>
+                                <span class="pill-divider">•</span>
+                                <span><i class="fa-solid fa-arrow-down"></i> L: <strong id="heroLow">--°</strong></span>
+                            </div>
+                        </div>
+                        <div class="hero-condition-wrap">
+                            <div class="hero-condition-title" id="heroCondition">Loading Weather...</div>
+                            <p class="hero-condition-desc" id="heroDesc">Fetching live Pakistan atmospheric data...</p>
+                        </div>
+                        <div class="hero-meta-footer">
+                            <div class="meta-item location-item" id="heroCity">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>Islamabad, Pakistan</span>
+                            </div>
+                            <div class="meta-item date-time-item">
+                                <i class="fa-regular fa-calendar"></i>
+                                <span id="heroDate">--</span>
+                                <span class="meta-divider">•</span>
+                                <i class="fa-regular fa-clock"></i>
+                                <span id="heroTime">--:--</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card-today-highlights" id="highlightsSection">
+                    <div class="section-card-header">
+                        <h2 id="lblHighlightsTitle">Today's Highlight</h2>
+                    </div>
+                    <div class="highlights-grid-2x3">
+                        <div class="hl-card hl-wind">
+                            <div class="hl-header">
+                                <span class="hl-title" id="lblWindTitle">Wind Status</span>
+                                <i class="fa-solid fa-wind hl-icon"></i>
+                            </div>
+                            <div class="hl-wind-chart-wrap">
+                                <svg class="hl-wave-svg" viewBox="0 0 200 45" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="windWaveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.5" />
+                                            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path id="windWavePath"
+                                        d="M0,25 Q30,5 60,25 T120,25 T180,15 T200,20 L200,45 L0,45 Z"
+                                        fill="url(#windWaveGrad)" />
+                                    <path id="windWaveLine" d="M0,25 Q30,5 60,25 T120,25 T180,15 T200,20" fill="none"
+                                        stroke="#38bdf8" stroke-width="2.5" />
+                                </svg>
+                                <div class="wind-bar-indicator-row">
+                                    <span></span><span></span><span></span><span class="active"></span><span
+                                        class="active"></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            <div class="hl-footer-row">
+                                <div class="hl-main-value">
+                                    <span id="windSpeedVal">--</span>
+                                    <span class="hl-unit" id="windUnitLabel">km/h</span>
+                                </div>
+                                <div class="hl-sub-info">
+                                    <span id="windGustsVal">--</span>
+                                    <span id="windDirectionDeg" class="hl-sub-note">Gusts</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hl-card hl-uv">
+                            <div class="hl-header">
+                                <span class="hl-title" id="lblUvTitle">UV Index</span>
+                                <i class="fa-solid fa-sun hl-icon"></i>
+                            </div>
+                            <div class="hl-uv-gauge-wrap">
+                                <svg class="uv-semi-gauge" viewBox="0 0 160 85">
+                                    <path class="uv-track" d="M 15 80 A 65 65 0 0 1 145 80" fill="none"
+                                        stroke="rgba(255,255,255,0.12)" stroke-width="12" stroke-linecap="round" />
+                                    <path class="uv-fill-arc" id="uvArcPath" d="M 15 80 A 65 65 0 0 1 145 80"
+                                        fill="none" stroke="url(#uvArcGradient)" stroke-width="12"
+                                        stroke-linecap="round" stroke-dasharray="204" stroke-dashoffset="100" />
+                                    <defs>
+                                        <linearGradient id="uvArcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#00d2ff" />
+                                            <stop offset="50%" stop-color="#3b82f6" />
+                                            <stop offset="100%" stop-color="#ec4899" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="uv-gauge-center-text">
+                                    <span id="uvIndexDesc">Moderate</span>
+                                </div>
+                            </div>
+                            <div class="hl-footer-row">
+                                <div class="hl-main-value">
+                                    <span id="uvIndexVal">--</span>
+                                    <span class="hl-unit">uv</span>
+                                </div>
+                                <div class="hl-sub-info">
+                                    <span class="hl-sub-note" id="uvFooter">Use sun protection</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hl-card hl-sun">
+                            <div class="hl-header">
+                                <span class="hl-title" id="lblSunTracker">Sunrise & Sunset</span>
+                                <i class="fa-solid fa-mountain-sun hl-icon"></i>
+                            </div>
+                            <div class="hl-sun-arc-wrap">
+                                <svg class="sun-arc-svg" viewBox="0 0 180 80">
+                                    <path class="sun-arc-dashed" d="M 15 75 Q 90 5 165 75" fill="none"
+                                        stroke="rgba(251, 191, 36, 0.4)" stroke-width="2" stroke-dasharray="4 4" />
+                                    <line x1="5" y1="75" x2="175" y2="75" stroke="rgba(255,255,255,0.1)"
+                                        stroke-width="1" />
+                                    <circle id="sunArcDot" cx="90" cy="40" r="7" fill="#fbbf24"
+                                        filter="drop-shadow(0 0 6px #f59e0b)" />
+                                </svg>
+                            </div>
+                            <div class="hl-sun-times-row">
+                                <div class="sun-time-box">
+                                    <i class="fa-solid fa-arrow-up-long sun-up-ico"></i>
+                                    <div>
+                                        <span class="sun-time-label" id="lblSunrise">Sunrise</span>
+                                        <strong id="sunriseTime">--:--</strong>
+                                    </div>
+                                </div>
+                                <div class="sun-time-box">
+                                    <i class="fa-solid fa-arrow-down-long sun-down-ico"></i>
+                                    <div>
+                                        <span class="sun-time-label" id="lblSunset">Sunset</span>
+                                        <strong id="sunsetTime">--:--</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hl-card hl-humidity">
+                            <div class="hl-header">
+                                <span class="hl-title" id="lblHumidity">Humidity</span>
+                                <i class="fa-solid fa-droplet hl-icon"></i>
+                            </div>
+                            <div class="hl-card-body-val">
+                                <span class="hl-main-number" id="heroHumidity">--</span>
+                                <span class="hl-unit-symbol">%</span>
+                            </div>
+                            <div class="hl-card-footer">
+                                <span class="hl-indicator-dot red" id="humidityDot"></span>
+                                <span class="hl-desc-text" id="humidityDesc">Comfortable level</span>
+                            </div>
+                        </div>
+                        <div class="hl-card hl-visibility">
+                            <div class="hl-header">
+                                <span class="hl-title" id="lblVisibility">Visibility</span>
+                                <i class="fa-solid fa-eye hl-icon"></i>
+                            </div>
+                            <div class="hl-card-body-val">
+                                <span class="hl-main-number" id="visibility">--</span>
+                                <span class="hl-unit-symbol">km</span>
+                            </div>
+                            <div class="hl-card-footer">
+                                <i class="fa-solid fa-smog sub-ico"></i>
+                                <span class="hl-desc-text" id="visibilityDesc">Clear vision range</span>
+                            </div>
+                        </div>
+                        <div class="hl-card hl-feels">
+                            <div class="hl-header">
+                                <span class="hl-title" id="lblFeelsLike">Feels Like</span>
+                                <i class="fa-solid fa-temperature-half hl-icon"></i>
+                            </div>
+                            <div class="hl-card-body-val">
+                                <span class="hl-main-number" id="heroFeels">--°</span>
+                            </div>
+                            <div class="hl-card-footer">
+                                <span class="hl-desc-text" id="feelsLikeDesc">Feels accurate</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card-forecast-section" id="forecastSection">
+                    <div class="section-card-header forecast-header-row">
+                        <h2 id="lblDailyTitle">7 days Forecast</h2>
+                        <div class="forecast-period-pill">
+                            <span>7 day</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="forecast-rows-list" id="forecastGrid">
+                    </div>
+                    <div class="tomorrow-spotlight-card" id="tomorrowSpotlight">
+                        <div class="tomorrow-info-left">
+                            <div class="tomorrow-icon-box" id="tomorrowIcon">⛈️</div>
+                            <div>
+                                <span class="tomorrow-tag" id="spotlightTag">Tomorrow</span>
+                                <div class="tomorrow-temp-val" id="tomorrowTemp">--°</div>
+                                <div class="tomorrow-cond-text" id="tomorrowCond">Forecast loading...</div>
+                            </div>
+                        </div>
+                        <div class="tomorrow-mini-graph" id="spotlightGraphWrap">
+                            <svg class="mini-sparkline" viewBox="0 0 100 35">
+                                <path d="M 5,25 Q 30,5 50,20 T 95,10" fill="none" stroke="#38bdf8" stroke-width="2.5"
+                                    stroke-linecap="round" />
+                                <circle cx="95" cy="10" r="3.5" fill="#f59e0b" />
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+                <section class="card-weather-map" id="weatherMapSection">
+                    <div class="section-card-header map-header-row">
+                        <div class="map-header-left">
+                            <i class="fa-solid fa-map-location-dot map-title-ico"></i>
+                            <h2 id="lblIntegratedMapTitle">Weather condition map</h2>
+                        </div>
+                        <div class="map-layer-pill-group">
+                            <button class="map-layer-chip active" data-layer="precipitation"
+                                id="btnLayerRain">Rain</button>
+                            <button class="map-layer-chip" data-layer="temp_new" id="btnLayerTemp">Temp</button>
+                            <button class="map-layer-chip" data-layer="wind_new" id="btnLayerWind">Wind</button>
+                            <button class="map-layer-chip" data-layer="clouds_new" id="btnLayerClouds">Clouds</button>
+                        </div>
+                    </div>
+                    <div class="integrated-map-viewport">
+                        <div id="integratedLeafletMap" class="leaflet-map-frame"></div>
+                        <div class="precipitation-spectrum-bar">
+                            <span class="spec-label">Precipitation</span>
+                            <div class="spectrum-gradient-track"></div>
+                            <div class="spectrum-ticks">
+                                <span>Extreme</span>
+                                <span>Heavy</span>
+                                <span>Moderate</span>
+                                <span>Light</span>
+                            </div>
+                        </div>
+                        <div class="map-floating-city-chips" id="mapFloatingChips">
+                            <div class="map-city-chip active" data-city="Islamabad">
+                                <i class="fa-solid fa-cloud"></i>
+                                <span>Islamabad, PK</span>
+                                <strong id="chipTempIslamabad">--°</strong>
+                            </div>
+                            <div class="map-city-chip" data-city="Lahore">
+                                <i class="fa-solid fa-sun"></i>
+                                <span>Lahore, PK</span>
+                                <strong id="chipTempLahore">--°</strong>
+                            </div>
+                            <div class="map-city-chip" data-city="Karachi">
+                                <i class="fa-solid fa-cloud-rain"></i>
+                                <span>Karachi, PK</span>
+                                <strong id="chipTempKarachi">--°</strong>
+                            </div>
+                        </div>
+                        <div class="map-floating-controls">
+                            <button class="map-float-btn" id="expandMapBtn" title="Fullscreen Radar Map"><i
+                                    class="fa-solid fa-expand"></i></button>
+                            <button class="map-float-btn" id="mapResetViewBtn" title="Reset View to Pakistan"><i
+                                    class="fa-solid fa-crosshairs"></i></button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="dashboard-drawer-tabs">
+                <section class="pk-cities-drawer-panel glass-panel" id="pkCitiesSection">
+                    <div class="drawer-header-row">
+                        <div class="drawer-title-group">
+                            <span class="pk-flag-symbol">🇵🇰</span>
+                            <h3 id="lblPopularCities">14 Popular Pakistani Cities</h3>
+                            <span class="live-tag" id="lblLiveUpdatesBadge">Live OWM</span>
+                        </div>
+                        <div class="drawer-search-filter">
+                            <i class="fa-solid fa-filter"></i>
+                            <input type="text" id="pkQuickSearch" placeholder="Filter Pakistani cities..."
+                                autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="pk-cities-carousel-grid" id="pkCitiesGrid">
+                    </div>
+                </section>
+                <section class="hourly-forecast-drawer glass-panel" id="hourlySection">
+                    <div class="drawer-header-row">
+                        <div class="drawer-title-group">
+                            <i class="fa-regular fa-clock"></i>
+                            <h3 id="lblHourlyTitle">48-Hour Hourly Forecast & Temperature Trend</h3>
+                        </div>
+                        <div class="hourly-scroll-controls">
+                            <button class="scroll-btn" id="scrollLeftHourly"><i
+                                    class="fa-solid fa-chevron-left"></i></button>
+                            <button class="scroll-btn" id="scrollRightHourly"><i
+                                    class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="hourly-scroll-container">
+                        <div class="hourly-items-track" id="hourlyGrid"></div>
+                    </div>
+                    <div class="hourly-canvas-trend-box">
+                        <canvas id="tempCurveCanvas" height="55"></canvas>
+                    </div>
+                </section>
+                <div class="deep-metrics-triple-grid">
+                    <div class="deep-card aqi-deep-card glass-panel">
+                        <div class="deep-card-header">
+                            <i class="fa-solid fa-lungs" style="color:#38bdf8;"></i>
+                            <span id="lblAqiTitle">Air Quality & Smog (AQI)</span>
+                        </div>
+                        <div class="aqi-score-row">
+                            <div class="aqi-badge-val" id="aqiVal">--</div>
+                            <div class="aqi-info-text">
+                                <div class="aqi-category" id="aqiDesc">Loading AQI...</div>
+                                <div class="aqi-advisory" id="aqiHealthAdv">Evaluating air quality...</div>
+                            </div>
+                        </div>
+                        <div class="aqi-gradient-scale-bar">
+                            <div class="aqi-scale-marker" id="aqiScaleIndicator"></div>
+                        </div>
+                        <div class="aqi-pollutants-pills">
+                            <div class="aqi-p-pill"><span>PM2.5</span><strong id="pm25">--</strong></div>
+                            <div class="aqi-p-pill"><span>PM10</span><strong id="pm10">--</strong></div>
+                            <div class="aqi-p-pill"><span>O₃</span><strong id="o3">--</strong></div>
+                            <div class="aqi-p-pill"><span>NO₂</span><strong id="no2">--</strong></div>
+                        </div>
+                    </div>
+                    <div class="deep-card namaz-deep-card glass-panel">
+                        <div class="deep-card-header">
+                            <i class="fa-solid fa-mosque" style="color:#10b981;"></i>
+                            <span id="lblNamazTitle">Namaz Times</span>
+                            <span class="namaz-city-pill" id="namazCityTag">Pakistan</span>
+                        </div>
+                        <div class="namaz-times-pills-row" id="namazGrid">
+                            <div class="namaz-time-pill"><span>Fajr</span><strong id="namazFajr">--:--</strong></div>
+                            <div class="namaz-time-pill"><span>Dhuhr</span><strong id="namazDhuhr">--:--</strong></div>
+                            <div class="namaz-time-pill"><span>Asr</span><strong id="namazAsr">--:--</strong></div>
+                            <div class="namaz-time-pill"><span>Maghrib</span><strong id="namazMaghrib">--:--</strong>
+                            </div>
+                            <div class="namaz-time-pill"><span>Isha</span><strong id="namazIsha">--:--</strong></div>
+                        </div>
+                        <div class="namaz-next-badge">
+                            <i class="fa-regular fa-clock"></i>
+                            <span id="namazNextLabel">Next prayer loading...</span>
+                        </div>
+                    </div>
+                    <div class="deep-card insights-deep-card glass-panel">
+                        <div class="deep-card-header">
+                            <i class="fa-solid fa-brain" style="color:#a855f7;"></i>
+                            <span id="lblInsightsTitle">Smart Insights & Lifestyle</span>
+                        </div>
+                        <div class="insights-summary-box">
+                            <p id="insightSummary">Analyzing current condition...</p>
+                        </div>
+                        <div class="lifestyle-mini-grid">
+                            <div class="ls-mini-item">
+                                <i class="fa-solid fa-shirt"></i>
+                                <div><small id="lblOutfitLabel">Outfit</small><strong id="lsOutfit">--</strong></div>
+                            </div>
+                            <div class="ls-mini-item">
+                                <i class="fa-solid fa-person-running"></i>
+                                <div><small id="lblRunningLabel">Outdoor</small><strong id="lsRunning">--</strong></div>
+                            </div>
+                            <div class="ls-mini-item">
+                                <i class="fa-solid fa-car"></i>
+                                <div><small id="lblDrivingLabel">Driving</small><strong id="lsDriving">--</strong></div>
+                            </div>
+                            <div class="ls-mini-item">
+                                <i class="fa-solid fa-star-and-crescent"></i>
+                                <div><small id="lblStargazingLabel">Night Sky</small><strong
+                                        id="lsStargazing">--</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comfort-and-tips-row">
+                    <div class="tip-rotator-card glass-panel">
+                        <div class="tip-header">
+                            <i class="fa-solid fa-lightbulb" style="color:#fbbf24;"></i>
+                            <span id="lblTipsTitle">Pakistan Weather Safety Tip</span>
+                        </div>
+                        <div class="tip-body-content">
+                            <span class="tip-big-emoji" id="tipIcon">💧</span>
+                            <p class="tip-text-para" id="tipText">Loading tip...</p>
+                        </div>
+                        <div class="tip-dots-indicator" id="tipDots"></div>
+                    </div>
+                    <div class="comfort-bars-card glass-panel">
+                        <div class="comfort-header">
+                            <i class="fa-solid fa-heart-pulse" style="color:#ef4444;"></i>
+                            <span id="lblComfortTitle">Live Comfort Index</span>
+                            <span class="comfort-score-badge" id="comfortScoreVal">--/10</span>
+                        </div>
+                        <div class="comfort-sliders-list">
+                            <div class="comfort-slider-row">
+                                <span>Heat Index</span>
+                                <div class="c-track">
+                                    <div class="c-bar heat" id="heatIndexBar" style="width:50%;"></div>
+                                </div>
+                                <strong id="heatIndexVal">--°</strong>
+                            </div>
+                            <div class="comfort-slider-row">
+                                <span>Humidity</span>
+                                <div class="c-track">
+                                    <div class="c-bar hum" id="humidityBar" style="width:50%;"></div>
+                                </div>
+                                <strong id="humidityBarVal">--%</strong>
+                            </div>
+                            <div class="comfort-slider-row">
+                                <span>Wind Chill</span>
+                                <div class="c-track">
+                                    <div class="c-bar wind" id="windChillBar" style="width:50%;"></div>
+                                </div>
+                                <strong id="windChillVal">-- km/h</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="saved-cities-bar glass-panel">
+                    <div class="saved-bar-title">
+                        <i class="fa-solid fa-bookmark" style="color:#38bdf8;"></i>
+                        <span id="lblFavoritesTitle">Favorite & Pinned Cities</span>
+                    </div>
+                    <div class="saved-cities-pills-row" id="savedCitiesList">
+                        <span class="loading-saved">Loading pinned cities...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="radarModal" class="radar-modal-overlay" style="display:none;">
+            <div class="radar-modal-box">
+                <div class="radar-modal-header">
+                    <div class="radar-title">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span id="lblModalMapTitle">Live Interactive Weather Radar – Pakistan</span>
+                    </div>
+                    <div class="radar-layer-buttons">
+                        <button class="radar-layer-btn active" data-layer="precipitation">🌧️ Rain</button>
+                        <button class="radar-layer-btn" data-layer="temp_new">🌡️ Temp</button>
+                        <button class="radar-layer-btn" data-layer="wind_new">💨 Wind</button>
+                        <button class="radar-layer-btn" data-layer="clouds_new">☁️ Clouds</button>
+                    </div>
+                    <button class="radar-close-btn" id="closeRadarBtn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="leafletMap" class="modal-leaflet-map-frame"></div>
+            </div>
+        </div>
+        <div id="loaderScreen" class="loader-screen" style="display:none;">
+            <div class="pulse-loader">
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring delay1"></div>
+                <div class="pulse-ring delay2"></div>
+                <span id="loaderIcon" class="loader-emoji">🌤️</span>
+            </div>
+            <p id="loaderText">Fetching live weather data...</p>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../assets/config.js"></script>
+    <script src="js/client-part1.js"></script>
+    <script src="js/client-part2.js"></script>
+    <script src="js/client-part3.js"></script>
+    <script src="js/client-part4.js"></script>
+    <script src="js/client-part5.js"></script>
+</body>
+
+</html>

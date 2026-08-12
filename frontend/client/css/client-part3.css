@@ -1,0 +1,500 @@
+
+.hl-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.hl-indicator-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.hl-indicator-dot.red {
+    background: #ef4444;
+    box-shadow: 0 0 6px #ef4444;
+}
+
+/* 1. Wind Wave Visualization */
+.hl-wind-chart-wrap {
+    margin: 8px 0;
+}
+
+.hl-wave-svg {
+    width: 100%;
+    height: 38px;
+}
+
+.wind-bar-indicator-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.wind-bar-indicator-row span {
+    flex: 1;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+}
+
+.wind-bar-indicator-row span.active {
+    background: var(--sky-blue);
+    box-shadow: 0 0 4px var(--sky-blue);
+}
+
+/* 2. UV Semi Gauge */
+.hl-uv-gauge-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: 4px 0;
+}
+
+.uv-semi-gauge {
+    width: 130px;
+    height: 70px;
+}
+
+.uv-gauge-center-text {
+    position: absolute;
+    bottom: 2px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* 3. Sun Arc Visualization */
+.hl-sun-arc-wrap {
+    margin: 4px 0;
+}
+
+.sun-arc-svg {
+    width: 100%;
+    height: 52px;
+}
+
+.hl-sun-times-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 4px;
+}
+
+.sun-time-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sun-up-ico { color: #fbbf24; font-size: 0.8rem; }
+.sun-down-ico { color: #f97316; font-size: 0.8rem; }
+
+.sun-time-label {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+
+.sun-time-box strong {
+    font-size: 0.82rem;
+    color: #fff;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   QUADRANT 3: 7-DAY FORECAST (BOTTOM LEFT)
+   ────────────────────────────────────────────────────────────────────────── */
+.card-forecast-section {
+    background: var(--bg-card-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 440px;
+    box-shadow: var(--shadow-card);
+}
+
+.forecast-header-row {
+    margin-bottom: 14px;
+}
+
+.forecast-period-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.forecast-rows-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.daily-forecast-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+    transition: background var(--transition-fast);
+}
+
+.daily-forecast-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.df-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.df-icon {
+    font-size: 1.3rem;
+    width: 28px;
+    text-align: center;
+}
+
+.df-temps {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.df-temps .min-temp {
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.85rem;
+    margin-left: 3px;
+}
+
+.df-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: right;
+}
+
+.df-date {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.df-day {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 70px;
+}
+
+/* Tomorrow Spotlight Card (Reference Match) */
+.tomorrow-spotlight-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.tomorrow-info-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tomorrow-icon-box {
+    font-size: 1.8rem;
+}
+
+.tomorrow-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--sky-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tomorrow-temp-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+}
+
+.tomorrow-cond-text {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+}
+
+.tomorrow-mini-graph {
+    width: 80px;
+    height: 32px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   QUADRANT 4: WEATHER CONDITION MAP (BOTTOM RIGHT)
+   ────────────────────────────────────────────────────────────────────────── */
+.card-weather-map {
+    background: var(--bg-card-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 440px;
+    box-shadow: var(--shadow-card);
+}
+
+.map-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.map-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.map-title-ico {
+    color: var(--cyan-accent);
+    font-size: 1.05rem;
+}
+
+.map-layer-pill-group {
+    display: flex;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 3px;
+    gap: 2px;
+}
+
+.map-layer-chip {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.map-layer-chip:hover {
+    color: #fff;
+}
+
+.map-layer-chip.active {
+    background: var(--sky-blue);
+    color: #0b0f14;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.4);
+}
+
+.integrated-map-viewport {
+    position: relative;
+    flex: 1;
+    min-height: 350px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.leaflet-map-frame {
+    width: 100%;
+    height: 100%;
+    min-height: 350px;
+    background: #0b0f14;
+}
+
+/* Precipitation Spectrum Bar (Reference Design) */
+.precipitation-spectrum-bar {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.spec-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.spectrum-gradient-track {
+    width: 140px;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #ef4444, #f59e0b, #3b82f6, #00d2ff);
+}
+
+.spectrum-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+}
+
+/* Floating Pakistani City Chips over Map (Reference Style) */
+.map-floating-city-chips {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    z-index: 400;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.map-city-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-pill);
+    padding: 6px 12px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    transition: all var(--transition-fast);
+}
+
+.map-city-chip:hover {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: var(--cyan-accent);
+    transform: translateY(-2px);
+}
+
+.map-city-chip.active {
+    background: rgba(0, 210, 255, 0.2);
+    border-color: var(--cyan-accent);
+    color: var(--cyan-accent);
+}
+
+.map-city-chip strong {
+    color: #fff;
+    font-weight: 800;
+}
+
+/* Floating Map Control Buttons */
+.map-floating-controls {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.map-float-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: all var(--transition-fast);
+}
+
+.map-float-btn:hover {
+    background: rgba(56, 189, 248, 0.25);
+    border-color: var(--sky-blue);
+    color: var(--sky-blue);
+    transform: scale(1.06);
+}
+
+/* ==========================================================================
+   4. EXPANDABLE PAKISTAN DETAILS & DRAWER PANELS
+   ========================================================================== */
+.dashboard-drawer-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 8px;
+}
+
+.drawer-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 14px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.drawer-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.drawer-title-group h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.pk-flag-symbol {
+    font-size: 1.2rem;
+}
+
+.live-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    background: rgba(0, 210, 255, 0.15);
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    color: var(--cyan-accent);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+}

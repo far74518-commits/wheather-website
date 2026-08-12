@@ -1,0 +1,506 @@
+
+.c-bar.heat { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.c-bar.hum { background: linear-gradient(90deg, #00d2ff, #3b82f6); }
+.c-bar.wind { background: linear-gradient(90deg, #38bdf8, #818cf8); }
+
+.comfort-slider-row strong {
+    width: 50px;
+    text-align: right;
+    color: #fff;
+}
+
+/* Saved / Pinned Cities Bar */
+.saved-cities-bar {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.saved-bar-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.saved-cities-pills-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.saved-city-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.saved-city-pill:hover {
+    background: rgba(0, 210, 255, 0.15);
+    border-color: var(--cyan-accent);
+}
+
+.saved-city-pill .del-pin {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    margin-left: 2px;
+}
+
+.saved-city-pill .del-pin:hover {
+    color: #f87171;
+}
+
+.loading-saved {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   FULLSCREEN RADAR MODAL
+   ========================================================================== */
+.radar-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 12, 17, 0.85);
+    backdrop-filter: blur(24px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: modalFadeIn 0.25s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.radar-modal-box {
+    background: var(--bg-card-elevated);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 1100px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+}
+
+.radar-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(10, 14, 20, 0.6);
+}
+
+.radar-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.radar-title i {
+    color: var(--cyan-accent);
+}
+
+.radar-layer-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.radar-layer-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.radar-layer-btn.active {
+    background: var(--sky-blue);
+    color: #0b0f14;
+    font-weight: 700;
+}
+
+.radar-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: all var(--transition-fast);
+}
+
+.radar-close-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+.modal-leaflet-map-frame {
+    flex: 1;
+    width: 100%;
+}
+
+/* ==========================================================================
+   GLOBAL LOADER SCREEN
+   ========================================================================== */
+.loader-screen {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 12, 17, 0.85);
+    backdrop-filter: blur(20px);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+}
+
+.pulse-loader {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--cyan-accent);
+    opacity: 0.6;
+    animation: ringPulse 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.pulse-ring.delay1 { animation-delay: 0.5s; }
+.pulse-ring.delay2 { animation-delay: 1.0s; }
+
+@keyframes ringPulse {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+.loader-emoji {
+    font-size: 2.2rem;
+    z-index: 2;
+}
+
+#loaderText {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-highlight);
+}
+
+/* Fix desktop layout for ultra-wide screens: items after the quad (first 4 items) should span full width */
+.dashboard-quad-layout > *:nth-child(n+5) {
+    grid-column: 1 / -1;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (DESKTOP, TABLET, MOBILE)
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .dashboard-quad-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .card-hero-weather {
+        min-height: auto;
+    }
+
+    .deep-metrics-triple-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comfort-and-tips-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-shell {
+        flex-direction: column;
+    }
+
+    .sidebar-nav-rail {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 10px 16px;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        border-right: none;
+        border-top: 1px solid var(--border-subtle);
+        background: rgba(10, 14, 20, 0.95);
+    }
+
+    .sidebar-brand, .sidebar-footer {
+        display: none;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .nav-rail-item.active::before {
+        display: none;
+    }
+
+    .dashboard-viewport {
+        padding: 16px 16px 85px 16px;
+    }
+
+    .dashboard-top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .top-bar-left {
+        max-width: 100%;
+    }
+
+    .highlights-grid-2x3 {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+
+    .hero-huge-temp {
+        font-size: 3.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .highlights-grid-2x3 {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-temp-block {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+/* ==========================================================================
+   DAY / NIGHT DYNAMIC BADGE & ATMOSPHERE ENHANCEMENTS
+   ========================================================================== */
+.hero-daynight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    color: #fbbf24;
+    transition: all var(--transition-fast);
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.15);
+}
+
+.hero-daynight-pill.night-mode {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(129, 140, 248, 0.45);
+    color: #a5b4fc;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+}
+
+.hero-daynight-pill i {
+    font-size: 0.85rem;
+}
+
+/* Hero card dynamic day/night atmospheric lighting */
+body.city-is-day .card-hero-weather {
+    border-color: rgba(251, 191, 36, 0.25);
+}
+
+body.city-is-night .card-hero-weather {
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+body.city-is-night .hero-atmosphere-backdrop {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+}
+
+/* ==========================================================================
+   INTERACTIVE 7-DAY FORECAST DAY SELECTION
+   ========================================================================== */
+.daily-forecast-row {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.daily-forecast-row:hover {
+    background: rgba(0, 210, 255, 0.08);
+    border-color: rgba(0, 210, 255, 0.3);
+    transform: translateX(4px);
+}
+
+.daily-forecast-row.selected-forecast-day {
+    background: rgba(0, 210, 255, 0.16) !important;
+    border-color: var(--cyan-accent) !important;
+    box-shadow: 0 0 16px rgba(0, 210, 255, 0.25);
+    transform: translateX(4px);
+}
+
+.daily-forecast-row.selected-forecast-day .df-day {
+    color: var(--cyan-accent) !important;
+    font-weight: 800;
+}
+
+.daily-forecast-row.selected-forecast-day::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 70%;
+    background: var(--cyan-accent);
+    border-radius: 2px;
+}
+
+.hourly-day-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--cyan-accent);
+    background: rgba(0, 210, 255, 0.12);
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    padding: 2px 10px;
+    border-radius: var(--radius-pill);
+    margin-left: 10px;
+}
+
+/* ==========================================================================
+   COMPLETE LIGHT THEME OVERRIDES (CRISP, HIGH-CONTRAST & ELEGANT)
+   ========================================================================== */
+body.theme-light {
+    color: #0f172a;
+}
+
+body.theme-light .glass-panel,
+body.theme-light .glass-panel-glow {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.07), 0 2px 8px -2px rgba(15, 23, 42, 0.04);
+}
+
+/* Sidebar Nav Rail in Light Mode */
+body.theme-light .sidebar-nav-rail {
+    background: rgba(255, 255, 255, 0.95);
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+body.theme-light .brand-name {
+    color: #0f172a;
+}
+
+body.theme-light .nav-rail-item {
+    color: #475569;
+}
+
+body.theme-light .nav-rail-item:hover,
+body.theme-light .nav-rail-item.active {
+    color: #0284c7;
+    background: rgba(2, 132, 199, 0.12);
+}
+
+body.theme-light .sidebar-footer-btn {
+    background: rgba(15, 23, 42, 0.04);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: #475569;
+}
+
+body.theme-light .sidebar-footer-btn:hover {
+    color: #0f172a;
+    background: rgba(15, 23, 42, 0.08);
+}
+
+/* Top Search Bar & Dropdowns in Light Mode */
+body.theme-light .search-box-container input {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    color: #0f172a;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+body.theme-light .search-box-container input::placeholder {
+    color: #94a3b8;
+}
+
+body.theme-light .search-box-container input:focus {
+    background: #ffffff;
+    border-color: #0284c7;
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15), 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+body.theme-light .suggestions-dropdown {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 20px 40px -8px rgba(15, 23, 42, 0.15);
+}
+
+body.theme-light .suggestion-item {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+body.theme-light .suggestion-item:hover {
+    background: rgba(2, 132, 199, 0.08);
+}
+
+body.theme-light .sug-name {
+    color: #0f172a;
+}
+
+body.theme-light .sug-region {
+    color: #64748b;
+}
+
+body.theme-light .clear-search-btn {
+    background: rgba(15, 23, 42, 0.08);
+    color: #334155;
+}
