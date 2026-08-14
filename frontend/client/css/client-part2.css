@@ -1,7 +1,13 @@
-
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .suggestion-item {
@@ -38,7 +44,8 @@
     color: var(--text-secondary);
 }
 
-.sug-loading, .sug-empty {
+.sug-loading,
+.sug-empty {
     padding: 14px 18px;
     text-align: center;
     color: var(--text-secondary);
@@ -76,8 +83,17 @@
 }
 
 @keyframes pulseGlow {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.5; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.3);
+        opacity: 0.5;
+    }
 }
 
 .pill-btn {
@@ -187,8 +203,15 @@
 }
 
 @keyframes alertSlideDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .alert-content {
@@ -284,7 +307,8 @@ body.theme-sunny .hero-atmosphere-backdrop {
     z-index: 2;
 }
 
-.hero-pin-btn, .hero-search-trigger-btn {
+.hero-pin-btn,
+.hero-search-trigger-btn {
     width: 38px;
     height: 38px;
     border-radius: 12px;
@@ -299,7 +323,8 @@ body.theme-sunny .hero-atmosphere-backdrop {
     transition: all var(--transition-fast);
 }
 
-.hero-pin-btn:hover, .hero-search-trigger-btn:hover {
+.hero-pin-btn:hover,
+.hero-search-trigger-btn:hover {
     color: #fff;
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.2);
@@ -328,8 +353,15 @@ body.theme-sunny .hero-atmosphere-backdrop {
 }
 
 @keyframes gentleFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
 }
 
 .hero-temp-block {
@@ -473,7 +505,8 @@ body.theme-sunny .hero-atmosphere-backdrop {
     line-height: 1.1;
 }
 
-.hl-unit-symbol, .hl-unit {
+.hl-unit-symbol,
+.hl-unit {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-secondary);
